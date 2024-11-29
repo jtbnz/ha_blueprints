@@ -1,0 +1,45 @@
+blueprint:
+  name: Start Cycle
+  description: ''
+  domain: automation
+  input:
+    power_sensor:
+      name: Power Sensor
+      selector:
+        entity:
+          domain: sensor
+    cycle_energy:
+      name: Cycle Energy
+      selector:
+        entity:
+          domain: input_number
+    cycle_start:
+      name: Cycle Start
+      selector:
+        entity:
+          domain: input_number
+    power_threshold:
+      name: Power Threshold
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: W
+          mode: box
+          step: 1
+trigger:
+  - platform: numeric_state
+    entity_id: !input power_sensor
+    above: !input power_threshold
+action:
+  - service: input_number.set_value
+    target:
+      entity_id: !input cycle_energy
+    data:
+      value: 0
+  - service: input_number.set_value
+    target:
+      entity_id: !input cycle_start
+    data:
+      value: '{{ states(''sensor.tasmota_energy_total_9'') | float }}'
+mode: single

@@ -1,0 +1,59 @@
+blueprint:
+  name: End Cycle Automation
+  description: Automation to handle end of cycle events.
+  domain: automation
+  input:
+    power_sensor:
+      name: Power Sensor
+      description: Sensor to monitor power levels.
+      selector:
+        entity:
+          domain: sensor
+    cycle_end_input:
+      name: Cycle End Input Number
+      description: Input number to store cycle end value.
+      selector:
+        entity:
+          domain: input_number
+    cycle_start_input:
+      name: Cycle Start Input Number
+      description: Input number to store cycle start value.
+      selector:
+        entity:
+          domain: input_number
+    cycle_energy_input:
+      name: Cycle Energy Input Number
+      description: Input number to store cycle energy value.
+      selector:
+        entity:
+          domain: input_number
+    cycle_counter_input:
+      name: Cycle Counter Input Number
+      description: Input number to store cycle counter value.
+      selector:
+        entity:
+          domain: input_number
+
+trigger:
+  - platform: numeric_state
+    entity_id: !input power_sensor
+    below: 10
+
+action:
+  - service: input_number.set_value
+    target:
+      entity_id: !input cycle_end_input
+    data:
+      value: '{{ states(''sensor.tasmota_energy_total_8'') | float }}'
+  - service: input_number.set_value
+    target:
+      entity_id: !input cycle_energy_input
+    data:
+      value: '{{ (states(''input_number.cycle_end_input'') | float) - (states(''input_number.cycle_start_input'') | float) }}'
+  - service: input_number.set_value
+    target:
+      entity_id: !input cycle_counter_input
+    data:
+      value: '{{ states(''input_number.cycle_counter_input'') | int + 1 }}'
+
+mode: single
