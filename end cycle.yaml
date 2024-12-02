@@ -44,16 +44,16 @@ action:
     target:
       entity_id: !input cycle_end_input
     data:
-      value: '{{ states(!input power_sensor) | float }}'
+      value: "{{ states(!input 'power_sensor') | float }}"
   - service: input_number.set_value
     target:
       entity_id: !input cycle_energy_input
     data:
-      value: '{{ (states(''input_number.cycle_end_input'') | float) - (states(''input_number.cycle_start_input'') | float) }}'
+      value: "{{ (states('input_number.cycle_end_input') | float) - (states('input_number.cycle_start_input') | float) }}"
   - service: input_number.set_value
     target:
       entity_id: !input cycle_counter_input
     data:
-      value: '{{ states(''input_number.cycle_counter_input'') | int + 1 }}'
+      value: "{{ states('input_number.cycle_counter_input') | int + 1 }}"
 
 mode: single
