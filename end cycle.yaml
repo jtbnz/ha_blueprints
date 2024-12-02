@@ -44,7 +44,7 @@ action:
     target:
       entity_id: !input cycle_end_input
     data:
-      value: '{{ states(''sensor.tasmota_energy_total_8'') | float }}'
+      value: '{{ states(''sensor.power_sensor'') | float(0) }}'
   - service: input_number.set_value
     target:
       entity_id: !input cycle_energy_input
