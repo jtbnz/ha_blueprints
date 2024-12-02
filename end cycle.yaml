@@ -1,5 +1,5 @@
 blueprint:
-  name: End Cycle Automation
+  name: End Cycle 
   description: Automation to handle end of cycle events.
   domain: automation
   input:
