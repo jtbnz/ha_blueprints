@@ -44,7 +44,7 @@ action:
     target:
       entity_id: !input cycle_end_input
     data:
-      value: "{{ states(!input 'power_sensor') | float }}"
+      value: "{{ states[!input 'power_sensor'].state | float }}"
   - service: input_number.set_value
     target:
       entity_id: !input cycle_energy_input
