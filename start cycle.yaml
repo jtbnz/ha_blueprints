@@ -41,5 +41,5 @@ action:
     target:
       entity_id: !input cycle_start
     data:
-      value: '{{ states(''sensor.tasmota_energy_total_9'') | float }}'
+      value: '{{ states(''sensor.'' + (''!input power_sensor'') | string) | float }}'
 mode: single
